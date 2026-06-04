@@ -8,6 +8,19 @@ A fully offline React Native Android application for secure facial recognition a
 
 ---
 
+## Demo — Screen Recording
+
+**[Watch the full app demo on Google Drive](https://drive.google.com/file/d/1fJTuhX2EFv_5ctE8QjiePRTo3WedkGpv/view?usp=sharing)**
+
+The recording demonstrates:
+- App launch and model initialisation
+- Face enrollment with active liveness challenges (blink → smile → head turn)
+- Identity verification — matched person's name displayed on success
+- Failed verification (no match / spoof rejected)
+- Fully offline — no network required at any point
+
+---
+
 ## Honest App Size Breakdown
 
 The hackathon criterion specifies **~20 MB for the AI model bundle**. Here is the full honest breakdown:

@@ -155,10 +155,17 @@ tb(s, "Ankit Thawal  ·  linkedin.com/in/ankit-thawal  ·  github.com/ankit-thaw
    Inches(2), Inches(4.75), Inches(9.33), Inches(0.4),
    size=13, color=SLATE, align=PP_ALIGN.CENTER)
 
+# Demo recording link — prominent green box
+rect(s, Inches(2.5), Inches(5.2), Inches(8.33), Inches(0.48), color=DARK_CARD,
+     line_color=GREEN, line_width=Pt(1.5))
+tb(s, "▶  DEMO  drive.google.com/file/d/1fJTuhX2EFv_5ctE8QjiePRTo3WedkGpv/view",
+   Inches(2.6), Inches(5.27), Inches(8.13), Inches(0.34),
+   size=12, color=GREEN, align=PP_ALIGN.CENTER, bold=True)
+
 # Feature chips
 chips = ["React Native", "Android + iOS", "19 MB Models", "< 1 sec", "Fully Offline"]
 for i, c in enumerate(chips):
-    chip(s, c, Inches(1.2 + i * 2.2), Inches(5.5))
+    chip(s, c, Inches(1.2 + i * 2.2), Inches(5.85))
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -712,12 +719,12 @@ accent_bar(s, Inches(5.05))
 tb(s, "Ankit Thawal",
    Inches(2), Inches(5.2), Inches(9.33), Inches(0.55),
    size=28, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
-tb(s, "🔗 linkedin.com/in/ankit-thawal",
+tb(s, "▶  Demo  drive.google.com/file/d/1fJTuhX2EFv_5ctE8QjiePRTo3WedkGpv/view",
    Inches(2), Inches(5.75), Inches(9.33), Inches(0.45),
-   size=16, color=BLUE, align=PP_ALIGN.CENTER)
-tb(s, "⌥ github.com/ankit-thawal47/pehchan",
+   size=16, color=GREEN, align=PP_ALIGN.CENTER, bold=True)
+tb(s, "🔗 linkedin.com/in/ankit-thawal   ·   github.com/ankit-thawal47/pehchan",
    Inches(2), Inches(6.2), Inches(9.33), Inches(0.45),
-   size=16, color=BLUE, align=PP_ALIGN.CENTER)
+   size=15, color=BLUE, align=PP_ALIGN.CENTER)
 tb(s, "HACKATHON 7.0  ·  JUNE 2026",
    Inches(2), Inches(6.75), Inches(9.33), Inches(0.4),
    size=13, color=SLATE, align=PP_ALIGN.CENTER)

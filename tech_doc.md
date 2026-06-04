@@ -6,6 +6,8 @@
 **Platform:** Android 8.0+ · iOS 12+ · React Native 0.74.3
 **Submission:** Hackathon 7.0 — June 2026
 
+**Demo Recording:** [Watch on Google Drive](https://drive.google.com/file/d/1fJTuhX2EFv_5ctE8QjiePRTo3WedkGpv/view?usp=sharing)
+
 ---
 
 ## Table of Contents
