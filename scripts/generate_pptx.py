@@ -237,6 +237,97 @@ for i, (label, color) in enumerate(steps):
 
 
 # ═══════════════════════════════════════════════════════════════════════════
+# SLIDE 3b — Innovation Level (maps directly to 30-mark criterion)
+# ═══════════════════════════════════════════════════════════════════════════
+s = add_slide()
+slide_title(s, "Innovation — How We Earn the 30 Marks",
+            "Edge AI efficiency · Compression techniques · Offline liveness effectiveness")
+
+# ── Sub-criterion 1: Edge AI Model Efficiency ──────────────────────────────
+rect(s, Inches(0.3), Inches(1.45), Inches(12.73), Inches(0.42), color=BLUE)
+tb(s, "① Efficiency of the Edge AI Model", Inches(0.5), Inches(1.5),
+   Inches(12.3), Inches(0.35), size=15, bold=True, color=WHITE)
+
+eff_items = [
+    ("MobileNetV3-Large (Spoof)",
+     "Designed for mobile — depthwise separable convs, SE attention, HardSwish.\n"
+     "5.4M params. Runs in ~160 ms on Snapdragon CPU. No GPU required."),
+    ("MobileFaceNet (Embedding)",
+     "1.0M params — 1/27th the size of ResNet-50 used in server systems.\n"
+     "512-dim embedding, trained on 600K identities. ~130 ms CPU."),
+    ("MediaPipe Face Landmarker",
+     "Dual-purpose: detects face bbox AND drives liveness — eliminates a\n"
+     "separate detector model. Float16 quantised by Google. ~60 ms."),
+    ("Laplacian Variance (Blur)",
+     "Classical CV — zero model weight. Pure JS 3×3 kernel.\n"
+     "No ONNX session, no inference cost. ~2 ms."),
+]
+for i, (title, body) in enumerate(eff_items):
+    cx = Inches(0.3 + i * 3.2)
+    rect(s, cx, Inches(1.9), Inches(3.05), Inches(1.45), color=DARK_CARD)
+    tb(s, title, cx + Inches(0.1), Inches(1.97), Inches(2.85), Inches(0.38),
+       size=12, bold=True, color=BLUE)
+    tb(s, body, cx + Inches(0.1), Inches(2.35), Inches(2.85), Inches(0.95),
+       size=10, color=SLATE)
+
+# ── Sub-criterion 2: Compression Techniques ───────────────────────────────
+rect(s, Inches(0.3), Inches(3.45), Inches(12.73), Inches(0.38), color=RGBColor(0x1E, 0x3A, 0x5F))
+tb(s, "② Compression Techniques — 50.8 MB checkpoint → 8.4 MB deployed  (83% reduction)",
+   Inches(0.5), Inches(3.5), Inches(12.3), Inches(0.32), size=15, bold=True, color=WHITE)
+
+# Compression journey visual
+journey = [
+    ("PyTorch .pth\nCheckpoint",    "50.8 MB", "source", SLATE),
+    ("ONNX Export\nopset 17",       "16.8 MB", "−67%",   BLUE),
+    ("FP16 Conversion\n(BN blocked)","8.4 MB", "−50%",   GREEN),
+]
+cx_j = Inches(0.4)
+for i, (label, size, delta, color) in enumerate(journey):
+    rect(s, cx_j, Inches(3.9), Inches(2.4), Inches(1.5), color=DARK_CARD,
+         line_color=color, line_width=Pt(1.5))
+    tb(s, size,  cx_j, Inches(3.98), Inches(2.4), Inches(0.5),
+       size=22, bold=True, color=color, align=PP_ALIGN.CENTER)
+    tb(s, label, cx_j, Inches(4.48), Inches(2.4), Inches(0.55),
+       size=10, color=SLATE, align=PP_ALIGN.CENTER)
+    if i < 2:
+        tb(s, f"→ {delta}", cx_j + Inches(2.4), Inches(4.1), Inches(0.8), Inches(0.4),
+           size=12, color=YELLOW, align=PP_ALIGN.CENTER, bold=True)
+    cx_j += Inches(3.2)
+
+# Why FP16 not INT8 — brief
+rect(s, Inches(9.8), Inches(3.9), Inches(3.2), Inches(1.5), color=DARK_CARD,
+     line_color=YELLOW, line_width=Pt(1))
+tb(s, "Why FP16, not INT8?", Inches(9.95), Inches(3.97), Inches(3.0), Inches(0.35),
+   size=12, bold=True, color=YELLOW)
+tb(s, "INT8 generates ConvInteger ops — excluded\n"
+      "from ORT mobile build on Android.\nFP16 uses standard Conv ops universally.",
+   Inches(9.95), Inches(4.32), Inches(3.0), Inches(1.0), size=10, color=SLATE)
+
+# ── Sub-criterion 3: Liveness Effectiveness ───────────────────────────────
+rect(s, Inches(0.3), Inches(5.5), Inches(12.73), Inches(0.38), color=RGBColor(0x05, 0x2E, 0x16))
+tb(s, "③ Effectiveness of Offline Liveness Detection",
+   Inches(0.5), Inches(5.55), Inches(12.3), Inches(0.32), size=15, bold=True, color=WHITE)
+
+live_cols = [
+    ("3-Challenge Sequence\n(Active)",
+     "Blink → Smile → Head Turn\nRequires real-time face movement.\nStatic media physically cannot comply."),
+    ("MediaPipe Blend Shapes\n(Precision)",
+     "52 facial action units tracked.\nEye open probability ± 0.05 accuracy.\nEuler yaw ± 2° precision."),
+    ("CLAHE Preprocessing\n(Lighting)",
+     "Adaptive histogram equalisation.\nHandles harsh sunlight, shadows,\nlow light — Indian field conditions."),
+    ("Passive Spoof Model\n(Double check)",
+     "MobileNetV3 on every capture.\nNaN guard: active liveness remains\nprimary if model gives no output."),
+]
+for i, (title, body) in enumerate(live_cols):
+    cx2 = Inches(0.3 + i * 3.2)
+    rect(s, cx2, Inches(5.95), Inches(3.05), Inches(1.4), color=DARK_CARD)
+    tb(s, title, cx2 + Inches(0.1), Inches(6.02), Inches(2.85), Inches(0.4),
+       size=11, bold=True, color=GREEN)
+    tb(s, body, cx2 + Inches(0.1), Inches(6.42), Inches(2.85), Inches(0.9),
+       size=10, color=SLATE)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
 # SLIDE 4 — Model Architecture & Compression
 # ═══════════════════════════════════════════════════════════════════════════
 s = add_slide()
