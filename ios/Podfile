@@ -19,13 +19,14 @@ target 'HelloWorld' do
 
   use_react_native!(
     :path => config[:reactNativePath],
-    # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  # MediaPipe Face Landmarker — liveness detection + face bbox
+  pod 'MediaPipeTasksVision', '~> 0.10.14'
+
   target 'HelloWorldTests' do
     inherit! :complete
-    # Pods for testing
   end
 
   post_install do |installer|
