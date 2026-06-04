@@ -198,50 +198,6 @@ Measured on Samsung Galaxy S25+ (Snapdragon 8 Elite, Android 16, CPU-only infere
 
 ---
 
-## Project Structure
-
-```
-ZepirisMobile/
-├── scripts/
-│   ├── export_models.py      # PyTorch → ONNX → FP16 conversion pipeline
-│   └── copy_models.sh        # Copy models to Android assets
-├── src/
-│   ├── ml/
-│   │   ├── OnnxSession.ts    # Singleton ONNX session manager, first-launch asset copy
-│   │   ├── SpoofDetector.ts  # Passive spoof inference with NaN guard
-│   │   ├── FaceEmbedder.ts   # 512-dim embedding + L2 normalisation
-│   │   ├── BlurDetector.ts   # Laplacian variance (pure JS, no model)
-│   │   └── LivenessChecker.ts# MediaPipe blink/smile/head-turn state machine
-│   ├── db/
-│   │   ├── schema.ts         # SQLite DDL mirroring ZepIris Milvus schema
-│   │   ├── database.ts       # DB initialisation
-│   │   ├── faceStore.ts      # CRUD + cosine similarity search
-│   │   └── syncQueue.ts      # Enqueue / drain / retry / purge
-│   ├── sync/
-│   │   ├── SyncManager.ts    # NetInfo listener + queue drain
-│   │   └── awsUploader.ts    # HTTP POST to AWS endpoint
-│   ├── screens/
-│   │   ├── HomeScreen.tsx    # Entry point with enroll/verify buttons
-│   │   ├── EnrollScreen.tsx  # Capture → blur → spoof → embed → store
-│   │   ├── VerifyScreen.tsx  # Liveness → capture → embed → match
-│   │   └── ResultScreen.tsx  # Match/no-match with name + confidence bar
-│   ├── components/
-│   │   ├── LivenessOverlay.tsx # Oval guide + challenge prompts + progress dots
-│   │   └── SyncBadge.tsx      # Pending sync count indicator on HomeScreen
-│   └── utils/
-│       ├── imageUtils.ts     # CLAHE, bilinear resize, ImageNet/FaceNet normalisation
-│       └── mathUtils.ts      # Cosine similarity, L2 norm, UUID generator
-├── android/
-│   └── app/src/main/
-│       ├── assets/models/          # Bundled ML model files
-│       └── java/com/zeprismobile/
-│           ├── MediaPipeModule.java  # Native: EXIF-aware image decode, face detect, liveness
-│           └── MediaPipePackage.java # React Native package registration
-└── models_exported/          # Intermediate export artefacts (gitignored)
-```
-
----
-
 ## Integration Guide — Adding to Datalake 3.0
 
 ### Step 1 — Copy source modules
@@ -416,15 +372,3 @@ SYNC_MAX_RETRIES         = 3
 SYNC_PURGE_AGE_MS        = 86400000   // purge synced queue entries after 24h
 SYNC_ENDPOINT            = 'https://httpbin.org/post'  // replace for production
 ```
-
----
-
-## Known Limitations
-
-| Limitation | Detail |
-|---|---|
-| **Passive spoof NaN on some ARM devices** | FP16 BatchNorm epsilon truncation causes NaN on certain ARM NEON implementations (e.g. Snapdragon 8 Elite). Handled gracefully — active liveness (MediaPipe) acts as primary anti-spoofing and is sufficient against photo/video replay. |
-| **iOS not built** | Same JS codebase is iOS-compatible. The native `MediaPipeModule` needs an Objective-C/Swift equivalent for iOS. Out of scope for this submission. |
-| **O(n) cosine search** | SQLite doesn't support vector indexing. Full scan is fine for pilot scale (<1000 faces). For larger deployments, add FAISS or similar. |
-| **AWS endpoint is mocked** | Replace `SYNC_ENDPOINT` in `constants.ts` with your API Gateway URL before production. |
-| **Debug APK size** | Debug builds bundle all CPU architectures + debug symbols (~200 MB). Production release targeting `arm64-v8a` only: ~60–70 MB. |
